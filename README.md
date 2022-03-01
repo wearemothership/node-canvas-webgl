@@ -245,3 +245,71 @@ renderer.loadTexture(url).then((texture) => {
   fs.writeFileSync('./snapshot/snap-meshjs2.png', canvas.toBuffer());
 });
 ```
+
+
+#### with jsdom & twgl
+
+https://github.com/greggman/twgl.js
+
+You can use twgl as running in web browsers.  Very useful for testing!
+
+```js
+import {
+	createCanvas,
+	WebGLRenderingContext,
+	WebGLActiveInfo,
+	WebGLFramebuffer,
+	WebGLBuffer,
+	WebGLDrawingBufferWrapper,
+	WebGLProgram,
+	WebGLRenderbuffer,
+	WebGLShader,
+	WebGLShaderPrecisionFormat,
+	WebGLTexture,
+	WebGLUniformLocation
+} from "node-canvas-webgl";
+
+// need to be global (as they would be in the browser) for twgl to get them!
+window.WebGLRenderingContext = WebGLRenderingContext;
+window.WebGLActiveInfo = WebGLActiveInfo;
+window.WebGLFramebuffer = WebGLFramebuffer;
+window.WebGLBuffer = WebGLBuffer;
+window.WebGLDrawingBufferWrapper = WebGLDrawingBufferWrapper;
+window.WebGLProgram = WebGLProgram;
+window.WebGLRenderbuffer = WebGLRenderbuffer;
+window.WebGLShader = WebGLShader;
+window.WebGLShaderPrecisionFormat = WebGLShaderPrecisionFormat;
+window.WebGLTexture = WebGLTexture;
+window.WebGLUniformLocation = WebGLUniformLocation;
+
+  const canvas = createCanvas(512, 512);
+
+  // do your normal twgl'y stuff!
+  
+  const gl = canvas.getContext("webgl");
+  const programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
+
+  const arrays = {
+    position: [-1, -1, 0, 1, -1, 0, -1, 1, 0, -1, 1, 0, 1, -1, 0, 1, 1, 0],
+  };
+  const bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
+
+  function render(time) {
+    twgl.resizeCanvasToDisplaySize(gl.canvas);
+    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+
+    const uniforms = {
+      time: time * 0.001,
+      resolution: [gl.canvas.width, gl.canvas.height],
+    };
+
+    gl.useProgram(programInfo.program);
+    twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
+    twgl.setUniforms(programInfo, uniforms);
+    twgl.drawBufferInfo(gl, bufferInfo);
+
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
+
+```

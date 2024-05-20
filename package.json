@@ -1,6 +1,6 @@
 {
   "name": "node-canvas-webgl",
-  "version": "0.2.9",
+  "version": "0.2.10",
   "description": "Integration of node-canvas and headless-gl.",
   "main": "lib/index.js",
   "scripts": {

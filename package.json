@@ -1,6 +1,6 @@
 {
   "name": "node-canvas-webgl",
-  "version": "0.2.6",
+  "version": "0.2.9",
   "description": "Integration of node-canvas and headless-gl.",
   "main": "lib/index.js",
   "scripts": {
@@ -23,6 +23,10 @@
   },
   "dependencies": {
     "canvas": "^2.9.0",
-    "gl": "^5.0.0"
+    "gl": "^6.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/akira-cn/node-canvas-webgl.git"
   }
 }

@@ -2,6 +2,22 @@
 
 Integration of [node-canvas](https://github.com/Automattic/node-canvas) and [headless-gl](https://github.com/stackgl/headless-gl).
 
+## WebGL Support
+
+This library supports **WebGL 1.0 only**. WebGL 2.0 contexts are automatically blocked since headless-gl does not support WebGL 2.0. When you request a `webgl2` context, the library will return `null`, ensuring compatibility with headless rendering environments.
+
+```js
+const {createCanvas} = require('node-canvas-webgl');
+
+const canvas = createCanvas(512, 512);
+
+// This will work - returns a WebGL 1.0 context
+const webglContext = canvas.getContext('webgl');
+
+// This will return null - WebGL 2.0 is blocked
+const webgl2Context = canvas.getContext('webgl2'); // null
+```
+
 ## Demos:
 
 #### with threejs
